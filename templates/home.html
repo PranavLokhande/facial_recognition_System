@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            animation: backgroundAnimation 10s ease-in-out infinite;
+        }
+        
+        @keyframes backgroundAnimation {
+            0% {
+                background: linear-gradient(to right, #00c9ff, #92fe9d);
+            }
+            50% {
+                background: linear-gradient(to right, #92fe9d, #00c9ff);
+            }
+            100% {
+                background: linear-gradient(to right, #00c9ff, #92fe9d);
+            }
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        h1,
+        h2,
+        h3 {
+            margin-top: 0;
+            animation: slideInFromTop 1s ease-in-out;
+        }
+        
+        @keyframes slideInFromTop {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            color: black;
+        }
+        
+        th,
+        td {
+            border: 1px solid #000000;
+            padding: 12px;
+            text-align: left;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        th {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .message {
+            color: #ff6666;
+            font-weight: bold;
+            text-align: center;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-5px);
+            }
+            75% {
+                transform: translateX(5px);
+            }
+        }
+        
+        .form-container {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .form-container input[type=text],
+        .form-container input[type=number] {
+            padding: 10px;
+            width: calc(100% - 22px);
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .form-container input[type=submit] {
+            padding: 10px 20px;
+            background: linear-gradient(to right, #00f260, #0575e6);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        
+        .form-container input[type=submit]:hover {
+            background: linear-gradient(to right, #0575e6, #00f260);
+            transform: scale(1.05);
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .card p {
+            margin: 0;
+        }
+        
+        .highlight-button {
+            padding: 15px 30px;
+            background: linear-gradient(to right, #00f260, #0575e6);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        
+        .highlight-button:hover {
+            background: linear-gradient(to right, #0575e6, #00f260);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Facial Recognition System</h1>
+        <h3>Date: {{ datetoday2 }}</h3>
+        {% if mess %}
+        <p class="message">{{ mess }}</p>
+        {% endif %}
+
+        <div class="card">
+            <p>Total Registrations: {{ totalreg }}</p>
+        </div>
+
+        <h2>Recognize_Users Record</h2>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Id</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for idx in range(l) %}
+                    <tr>
+                        <td>{{ names[idx] }}</td>
+                        <td>{{ rolls[idx] }}</td>
+                        <td>{{ times[idx] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-container">
+            <h2>Add New User</h2>
+            <form action="/add" method="post">
+                <label for="newusername">New User Name:</label>
+                <input type="text" id="newusername" name="newusername" required>
+                <label for="newuserid">New User ID:</label>
+                <input type="number" id="newuserid" name="newuserid" required>
+                <input type="submit" value="Add New User">
+            </form>
+        </div>
+
+        <h2>Start Recognize</h2>
+        <p>Click below to start Recognition:</p>
+        <form action="/start" method="get">
+            <input type="submit" class="highlight-button" value="Start">
+        </form>
+    </div>
+</body>
+
+</html>
